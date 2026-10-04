@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General -->
+    <string name="app_name">Health Dashboard</string>
+    <string name="title_health">Health</string>
+    <string name="menu_options">Menu options</string>
+    <string name="action_add">Add</string>
+    <string name="activity_rings">Activity rings</string>
+
+    <!-- Rings -->
+    <string name="label_move">Move</string>
+    <string name="label_exercise">Exercise</string>
+    <string name="label_stand">Stand</string>
+
+    <string name="val_move">300</string>
+    <string name="val_move_unit">kcal</string>
+
+    <string name="val_exercise">30</string>
+    <string name="val_exercise_unit">min</string>
+
+    <string name="val_stand">12</string>
+    <string name="val_stand_unit">h</string>
+
+    <string name="text_todays_steps">Today\'s steps</string>
+    <string name="val_steps">10,000</string>
+    <string name="val_steps_target">/ 10,000 steps</string>
+
+    <!-- Quick Actions -->
+    <string name="action_workouts">Workouts</string>
+    <string name="action_stay_fit">Stay Fit Plan</string>
+    <string name="action_breathing">Breathing\nExercise</string>
+    <string name="action_diet">Diet log</string>
+    <string name="action_sleep">Sound\nMusic</string>
+
+    <!-- Grid Cards -->
+    <string name="card_title_exercise">Exercise records</string>
+    <string name="card_val_exercise">6.7</string>
+    <string name="card_unit_exercise">km</string>
+    <string name="card_footer_exercise">5/14 Outdoor</string>
+
+    <string name="card_title_clovers">Health Clovers</string>
+    <string name="card_val_clovers">8/8</string>
+    <string name="card_unit_clovers">Tasks completed</string>
+    <string name="card_footer_clovers">5/14</string>
+
+    <string name="card_title_heart">Heart</string>
+    <string name="card_title_weight">Weight</string>
+
+</resources>
