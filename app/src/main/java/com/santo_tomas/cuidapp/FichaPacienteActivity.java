@@ -4,36 +4,33 @@ import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.IdRes;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 /**
  * Ficha del paciente.
  *
  * INTENTS EN ESTA CLASE:
- *  - #2 EXPLÍCITO: btnVolverFicha  -> retorno global al Menú Principal
+ *  - #2 EXPLÍCITO: btnVolverFicha     -> volverAlMenu() heredado de BaseActivity
  *  - #4 IMPLÍCITO: llamarEmergencia() -> ACTION_DIAL
  *  - #5 IMPLÍCITO: enviarCorreo()     -> ACTION_SENDTO (mailto:)
- *  - #6 IMPLÍCITO: abrirCamara()      -> ACTION_IMAGE_CAPTURE
+ *  - #6 IMPLÍCITO: abrirCamara()      -> ACTION_IMAGE_CAPTURE (la foto vuelve y se muestra en pantalla)
  *
  * PERMISO EN TIEMPO DE EJECUCIÓN: CAMERA.
- * Importante: si el Manifest declara CAMERA y la app NO lo tiene concedido, lanzar
- * ACTION_IMAGE_CAPTURE provoca SecurityException. Por eso se verifica antes.
+ * Si el Manifest declara CAMERA y la app NO lo tiene concedido, lanzar ACTION_IMAGE_CAPTURE
+ * provoca SecurityException. Por eso se verifica antes de abrir la cámara.
  */
-public class FichaPacienteActivity extends AppCompatActivity {
+public class FichaPacienteActivity extends BaseActivity {
 
-    private static final String TAG = "FichaPaciente";
+    private ImageView ivFoto;
 
     /** Respuesta del diálogo de permiso de cámara: si lo aceptó, abre la cámara de inmediato. */
     private final ActivityResultLauncher<String> solicitarPermisoCamara =
@@ -45,27 +42,37 @@ public class FichaPacienteActivity extends AppCompatActivity {
                 }
             });
 
+    /** Resultado de la cámara: llega la miniatura de la foto en el extra "data". */
+    private final ActivityResultLauncher<Intent> lanzadorCamara =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), resultado -> {
+                // Validación 1: el usuario pudo cancelar la captura
+                if (resultado.getResultCode() != RESULT_OK) {
+                    mostrarMensaje(R.string.msg_foto_cancelada);
+                    return;
+                }
+                Bitmap miniatura = extraerMiniatura(resultado.getData());
+
+                // Validación 2: la cámara puede devolver el resultado sin imagen
+                if (miniatura == null || ivFoto == null) {
+                    mostrarMensaje(R.string.err_foto);
+                    return;
+                }
+                ivFoto.setImageBitmap(miniatura);
+                ivFoto.setVisibility(View.VISIBLE);
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ficha_paciente);
-
-        setContentView(R.layout.activity_menu_principal);
         InsetsUtil.aplicar(this); // evita que el contenido quede bajo las barras del sistema
+
+        ivFoto = findViewById(R.id.iv_foto_perfil);
 
         configurarBoton(R.id.btnLlamar, v -> llamarEmergencia());
         configurarBoton(R.id.btnCorreo, v -> enviarCorreo());
         configurarBoton(R.id.btnFoto, v -> tomarFoto());
-        configurarBoton(R.id.btnVolverFicha, v -> volverAlMenu());
-    }
-
-    private void configurarBoton(@IdRes int id, View.OnClickListener accion) {
-        View boton = findViewById(id);
-        if (boton == null) {
-            Log.e(TAG, "No se encontró el botón: " + getResources().getResourceEntryName(id));
-            return;
-        }
-        boton.setOnClickListener(accion);
+        configurarBoton(R.id.btnVolverFicha, v -> volverAlMenu()); // Intent #2 (BaseActivity)
     }
 
     // =====================================================================
@@ -91,7 +98,7 @@ public class FichaPacienteActivity extends AppCompatActivity {
     }
 
     // =====================================================================
-    // INTENT #6 (IMPLÍCITO): Cámara.  Primero se valida hardware y permiso.
+    // INTENT #6 (IMPLÍCITO): Cámara. Primero se valida hardware y permiso.
     // =====================================================================
     private void tomarFoto() {
         // Validación 1: ¿el equipo tiene cámara? (el Manifest la declara como no obligatoria)
@@ -108,36 +115,37 @@ public class FichaPacienteActivity extends AppCompatActivity {
         }
     }
 
+    /** Lanza la cámara esperando resultado. Si no hay app de cámara, avisa en vez de crashear. */
     private void abrirCamara() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        iniciarSeguro(cameraIntent);
-    }
-
-    // =====================================================================
-    // INTENT #2 (EXPLÍCITO): Retorno global al Menú Principal.
-    // CLEAR_TOP: si el Menú ya está en la pila, cierra todo lo que esté encima de él
-    // y lo reutiliza, evitando duplicados. SINGLE_TOP evita recrearlo.
-    // =====================================================================
-    private void volverAlMenu() {
-        Intent intentMenu = new Intent(this, MenuPrincipalActivity.class);
-        intentMenu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intentMenu);
-        finish();
-    }
-
-    // ------------------------- Utilidades -------------------------
-
-    /** Lanza un intent implícito sin crashear si no hay app compatible. */
-    private void iniciarSeguro(Intent intent) {
-        if (intent == null) return; // validación de nulo
         try {
-            startActivity(intent);
+            lanzadorCamara.launch(cameraIntent);
         } catch (ActivityNotFoundException e) {
             mostrarMensaje(R.string.err_no_app);
         }
     }
 
-    private void mostrarMensaje(@StringRes int mensaje) {
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+    /**
+     * Saca la miniatura (Bitmap) del resultado de la cámara, o null si no viene.
+     * MEJORA: Se evita el uso exclusivo del método deprecated, bifurcando
+     * según la versión del sistema operativo (API 33+).
+     */
+    private Bitmap extraerMiniatura(Intent datos) {
+        if (datos == null || datos.getExtras() == null) return null;
+
+        Bitmap miniatura = null;
+
+        // A partir de Android 13 (Tiramisu, API 33), se debe usar el método con clase explícita
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            miniatura = datos.getExtras().getParcelable("data", Bitmap.class);
+        } else {
+            // Para versiones anteriores, mantenemos la lógica clásica
+            Object dato = datos.getExtras().get("data");
+            if (dato instanceof Bitmap) {
+                miniatura = (Bitmap) dato;
+            }
+        }
+
+        return miniatura;
     }
 }

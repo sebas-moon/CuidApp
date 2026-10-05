@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    NOTA: se eliminó el atributo package="...". Con Android Gradle Plugin 7.3+ el paquete
-    se declara en app/build.gradle como:  namespace 'com.santo_tomas.cuidapp'
--->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- ===== PERMISOS ===== -->
@@ -11,7 +7,7 @@
     <!-- Internet: necesario para abrir el Portal Minsal -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Ubicación: se pide en tiempo de ejecución en MenuPrincipalActivity.
-         Desde Android 12 hay que declarar FINE y COARSE juntos, porque el usuario puede elegir "aproximada". -->
+         Desde Android 12 se declaran FINE y COARSE juntos, porque el usuario puede elegir "aproximada". -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -19,34 +15,26 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <!-- ===== VISIBILIDAD DE PAQUETES (Android 11+) =====
-         Declara qué tipos de apps externas puede consultar CuidApp con sus intents implícitos. -->
+         Un bloque por cada intent implícito de la app (los 5 de la rúbrica). -->
     <queries>
-        <intent>
+        <intent>   <!-- Intent #4: llamada -->
             <action android:name="android.intent.action.DIAL" />
             <data android:scheme="tel" />
         </intent>
-        <intent>
+        <intent>   <!-- Intent #5: correo -->
             <action android:name="android.intent.action.SENDTO" />
             <data android:scheme="mailto" />
         </intent>
-        <intent>
+        <intent>   <!-- Intent #6: cámara -->
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>
-        <intent>
+        <intent>   <!-- Intent #7: mapas -->
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="geo" />
         </intent>
-        <intent>
+        <intent>   <!-- Intent #8: navegador -->
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.SEND" />
-            <data android:mimeType="text/plain" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.GET_CONTENT" />
-            <data android:mimeType="application/pdf" />
         </intent>
     </queries>
 
@@ -58,7 +46,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CuidApp">
 
-        <!-- 1. Menú Principal (Launcher) -->
+        <!-- Menú Principal (Launcher) -->
         <activity
             android:name=".MenuPrincipalActivity"
             android:exported="true">
@@ -68,7 +56,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Demás Actividades (solo accesibles desde dentro de la app) -->
+        <!-- Demás Activities (solo accesibles desde dentro de la app) -->
         <activity android:name=".DashboardActivity" android:exported="false" />
         <activity android:name=".MisExpedientesActivity" android:exported="false" />
         <activity android:name=".FichaPacienteActivity" android:exported="false" />

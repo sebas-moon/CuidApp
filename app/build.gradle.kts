@@ -38,7 +38,7 @@ android {
 
 dependencies {
     implementation(libs.appcompat)          // AppCompatActivity
-    implementation(libs.material)           // MaterialButton, MaterialCardView, BottomNavigationView, Material3
+    implementation(libs.material)           // MaterialButton, MaterialCardView, BottomNavigationView, Material 3
     implementation(libs.activity)           // Activity Result API (registerForActivityResult)
     implementation(libs.constraintlayout)   // ConstraintLayout y Flow
     testImplementation(libs.junit)

@@ -13,13 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
  * Desde Android 15 (targetSdk 35+) las apps se dibujan "de borde a borde" (edge-to-edge).
  * Esta utilidad lee el tamaño de las barras del sistema y lo aplica como padding
  * al contenedor raíz de la pantalla.
- *
- * Un problema que sale de tu targetSdk = 36
- * Desde Android 15, las apps con targetSdk 35 o superior se dibujan debajo de la barra de estado
- * y de la barra de navegación. En Android 16 ya no se puede desactivar.
- * En tu app el título del Dashboard quedaría tapado por la barra de estado,
- * y el BottomNavigationView por los botones del sistema.
- * La solución es una clase pequeña que aplica el espacio de las barras como padding.
  */
 public final class InsetsUtil {
 

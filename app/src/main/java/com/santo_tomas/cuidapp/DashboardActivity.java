@@ -1,41 +1,33 @@
 package com.santo_tomas.cuidapp;
 
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 /**
  * Dashboard de salud.
  *
  * INTENTS EN ESTA CLASE:
- *  - #2 EXPLÍCITO: btnBackToMenu            -> retorno global al Menú Principal
+ *  - #2 EXPLÍCITO: btn_back_to_menu         -> volverAlMenu() heredado de BaseActivity
  *  - #3 EXPLÍCITO: iniciarServicioMonitoreo -> lanza ServicioMonitoreo (que corre un Thread)
- *  - EXTRA (NO cuenta entre los 8): compartirReporteNativo() -> ACTION_SEND
  *
  * COMUNICACIÓN CON EL SERVICIO: el Service (hilo secundario) envía Broadcasts; esta Activity
  * los recibe con un BroadcastReceiver (se ejecuta en el hilo principal, así que puede tocar la UI).
  */
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends BaseActivity {
 
     private static final String TAG = "DashboardActivity";
 
-    private MaterialButton btnShareReport;
-    private MaterialButton btnBackToMenu;
     private BottomNavigationView bottomNavigation;
     private TextView tvBpm;
 
@@ -48,8 +40,6 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-        setContentView(R.layout.activity_menu_principal);
         InsetsUtil.aplicar(this); // evita que el contenido quede bajo las barras del sistema
 
         inicializarVistas();
@@ -59,14 +49,11 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void inicializarVistas() {
-        btnShareReport = findViewById(R.id.btn_share_report);
-        btnBackToMenu = findViewById(R.id.btn_back_to_menu);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         tvBpm = findViewById(R.id.tv_bpm);
 
         // Validación de nulos: evita NullPointerException si un ID no existe en el layout
-        if (btnShareReport == null || btnBackToMenu == null
-                || bottomNavigation == null || tvBpm == null) {
+        if (bottomNavigation == null || tvBpm == null) {
             mostrarMensaje(R.string.err_ui_init);
         }
         if (bottomNavigation != null) {
@@ -76,12 +63,8 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void configurarListeners() {
-        if (btnBackToMenu != null) {
-            btnBackToMenu.setOnClickListener(v -> volverAlMenu());
-        }
-        if (btnShareReport != null) {
-            btnShareReport.setOnClickListener(v -> compartirReporteNativo());
-        }
+        configurarBoton(R.id.btn_back_to_menu, v -> volverAlMenu()); // Intent #2 (BaseActivity)
+
         if (bottomNavigation != null) {
             bottomNavigation.setOnItemSelectedListener(item -> {
                 if (item.getItemId() == R.id.nav_health) {
@@ -105,30 +88,6 @@ public class DashboardActivity extends AppCompatActivity {
         } catch (IllegalStateException e) {
             // Android 8+ puede rechazar servicios si la app no está en primer plano
             Log.e(TAG, "No se pudo iniciar el servicio de monitoreo", e);
-        }
-    }
-
-    // =====================================================================
-    // INTENT #2 (EXPLÍCITO): Retorno global al Menú Principal.
-    // =====================================================================
-    private void volverAlMenu() {
-        Intent intentMenu = new Intent(this, MenuPrincipalActivity.class);
-        intentMenu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intentMenu);
-        finish();
-    }
-
-    // =====================================================================
-    // EXTRA (IMPLÍCITO, fuera de la rúbrica): compartir reporte con ACTION_SEND.
-    // =====================================================================
-    private void compartirReporteNativo() {
-        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-        sendIntent.setType("text/plain");
-        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_report_text));
-        try {
-            startActivity(Intent.createChooser(sendIntent, getString(R.string.share_chooser_title)));
-        } catch (ActivityNotFoundException e) {
-            mostrarMensaje(R.string.err_no_app);
         }
     }
 
@@ -188,7 +147,6 @@ public class DashboardActivity extends AppCompatActivity {
             filter.addAction(ServicioMonitoreo.ACTION_LECTURA);
             filter.addAction(ServicioMonitoreo.ACTION_TAQUICARDIA);
             // RECEIVER_NOT_EXPORTED: solo acepta broadcasts de esta misma app (obligatorio en Android 13+).
-            // ContextCompat ya resuelve la diferencia entre versiones, no hace falta if por SDK.
             ContextCompat.registerReceiver(this, sensorReceiver, filter,
                     ContextCompat.RECEIVER_NOT_EXPORTED);
             receptorRegistrado = true;
@@ -216,9 +174,5 @@ public class DashboardActivity extends AppCompatActivity {
             stopService(servicioIntent);
         }
         super.onDestroy();
-    }
-
-    private void mostrarMensaje(@StringRes int mensaje) {
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 }

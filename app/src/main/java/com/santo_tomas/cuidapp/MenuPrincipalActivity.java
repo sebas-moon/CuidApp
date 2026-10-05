@@ -2,7 +2,6 @@ package com.santo_tomas.cuidapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,14 +10,9 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.IdRes;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 /**
@@ -31,13 +25,13 @@ import androidx.core.content.ContextCompat;
  *
  * PERMISO EN TIEMPO DE EJECUCIÓN: ubicación (se pide al tocar "Buscar Hospital Cercano").
  */
-public class MenuPrincipalActivity extends AppCompatActivity {
+public class MenuPrincipalActivity extends BaseActivity {
 
     private static final String TAG = "MenuPrincipal";
 
     /**
      * Launcher moderno (Activity Result API) para pedir permisos.
-     * Debe declararse como campo (o en onCreate) ANTES de que la Activity llegue a STARTED.
+     * Debe declararse como campo ANTES de que la Activity llegue a STARTED.
      * Cuando el usuario responde el diálogo del sistema, se ejecuta este callback.
      */
     private final ActivityResultLauncher<String[]> solicitarPermisosUbicacion =
@@ -53,8 +47,6 @@ public class MenuPrincipalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
-
-        setContentView(R.layout.activity_menu_principal);
         InsetsUtil.aplicar(this); // evita que el contenido quede bajo las barras del sistema
 
         // --- Navegación interna (Intent explícito #1, un único punto de código) ---
@@ -67,19 +59,6 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         configurarBoton(R.id.btnWeb, v -> abrirPortalMinsal());
     }
 
-    /**
-     * Asigna un listener validando que la vista exista (evita NullPointerException
-     * si el ID no está en el layout).
-     */
-    private void configurarBoton(@IdRes int id, View.OnClickListener accion) {
-        View boton = findViewById(id);
-        if (boton == null) {
-            Log.e(TAG, "No se encontró el botón: " + getResources().getResourceEntryName(id));
-            return;
-        }
-        boton.setOnClickListener(accion);
-    }
-
     // =====================================================================
     // INTENT #1 (EXPLÍCITO): navegación entre pantallas de la app.
     // "Explícito" = se indica la clase destino exacta (Activity.class).
@@ -90,8 +69,8 @@ public class MenuPrincipalActivity extends AppCompatActivity {
     }
 
     // =====================================================================
-    // INTENT #7 (IMPLÍCITO): Mapas
-    // Si hay permiso y ubicación conocida, centra la búsqueda ahí; si no, usa geo:0,0.
+    // INTENT #7 (IMPLÍCITO): Mapas.
+    // Primero se valida el permiso de ubicación; luego se abre el mapa.
     // =====================================================================
     private void buscarHospitalCercano() {
         if (tienePermisoUbicacion()) {
@@ -105,6 +84,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         }
     }
 
+    /** Si hay ubicación conocida centra la búsqueda ahí; si no, usa geo:0,0. */
     private void abrirMapaHospitales() {
         String consulta = Uri.encode(getString(R.string.intent_busqueda_hospital));
         Location ubicacion = obtenerUltimaUbicacion();
@@ -114,11 +94,11 @@ public class MenuPrincipalActivity extends AppCompatActivity {
                 : "geo:0,0?q=" + consulta;
 
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        iniciarSeguro(mapIntent);
+        iniciarSeguro(mapIntent); // si no hay app de mapas, muestra aviso en vez de crashear
     }
 
     // =====================================================================
-    // INTENT #8 (IMPLÍCITO): Navegador web
+    // INTENT #8 (IMPLÍCITO): Navegador web.
     // =====================================================================
     private void abrirPortalMinsal() {
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -126,17 +106,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         iniciarSeguro(webIntent);
     }
 
-    // ------------------------- Utilidades -------------------------
-
-    /** Lanza un intent implícito sin que la app se caiga si no existe app que lo atienda. */
-    private void iniciarSeguro(Intent intent) {
-        if (intent == null) return; // validación de nulo
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            mostrarMensaje(R.string.err_no_app);
-        }
-    }
+    // ------------------------- Utilidades de ubicación -------------------------
 
     /** true si el usuario concedió ubicación precisa O aproximada. */
     private boolean tienePermisoUbicacion() {
@@ -170,9 +140,5 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             }
         }
         return mejor;
-    }
-
-    private void mostrarMensaje(@StringRes int mensaje) {
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 }
