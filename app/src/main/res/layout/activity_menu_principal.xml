@@ -1,10 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuPrincipalActivity">
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#F5F5F5">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido a SaludApp 🏥"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Intents Explícitos -->
+    <Button
+        android:id="@+id/btnFicha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📋 Ficha del Paciente"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnExpedientes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📂 Expedientes Médicos"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnMonitoreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📈 Monitoreo Diario"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Intents Implícitos de Alessy -->
+    <Button
+        android:id="@+id/btnHospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#4CAF50"
+        android:text="📍 Buscar Hospital Cercano"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnWeb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#2196F3"
+        android:text="🌐 Portal Minsal" />
+</LinearLayout>

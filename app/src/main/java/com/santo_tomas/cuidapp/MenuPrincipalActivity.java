@@ -1,24 +1,40 @@
-package com.santo_tomas.cuidapp;
+package com.tuempresa.appsalud;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MenuPrincipalActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_menu_principal);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        setContentView(R.layout.activity_main);
+
+        // 1. Intents Explícitos (Navegación)
+        findViewById(R.id.btnFicha).setOnClickListener(v -> {
+            startActivity(new Intent(this, FichaActivity.class));
+        });
+
+        findViewById(R.id.btnExpedientes).setOnClickListener(v -> {
+            startActivity(new Intent(this, ExpedientesActivity.class));
+        });
+
+        findViewById(R.id.btnMonitoreo).setOnClickListener(v -> {
+            startActivity(new Intent(this, MonitoreoActivity.class));
+        });
+
+        // 2. Intents Implícitos (Alessy)
+        findViewById(R.id.btnHospital).setOnClickListener(v -> {
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=hospital"));
+            startActivity(mapIntent);
+        });
+
+        findViewById(R.id.btnWeb).setOnClickListener(v -> {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.minsal.cl"));
+            startActivity(webIntent);
         });
     }
 }

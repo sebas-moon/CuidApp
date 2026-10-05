@@ -1,24 +1,24 @@
-package com.santo_tomas.cuidapp;
+package com.tuempresa.appsalud;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class MisExpedientesActivity extends AppCompatActivity {
+public class ExpedientesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_mis_expedientes);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        setContentView(R.layout.activity_expedientes);
+
+        // Intent implícito extra: Abrir explorador de archivos
+        findViewById(R.id.btnSubirDoc).setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("application/pdf");
+            startActivity(intent);
         });
+
+        // Volver
+        findViewById(R.id.btnVolverExpedientes).setOnClickListener(v -> finish());
     }
 }

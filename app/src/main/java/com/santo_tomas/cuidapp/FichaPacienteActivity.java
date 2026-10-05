@@ -1,24 +1,38 @@
-package com.santo_tomas.cuidapp;
+package com.tuempresa.appsalud;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class FichaPacienteActivity extends AppCompatActivity {
+public class FichaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_ficha_paciente);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        setContentView(R.layout.activity_ficha);
+
+        // Llamada (Intent Implícito)
+        findViewById(R.id.btnLlamar).setOnClickListener(v -> {
+            Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:131"));
+            startActivity(callIntent);
         });
+
+        // Correo (Intent Implícito)
+        findViewById(R.id.btnCorreo).setOnClickListener(v -> {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:cuidador@correo.com"));
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "🚨 Reporte de Paciente");
+            startActivity(emailIntent);
+        });
+
+        // Cámara (Intent Implícito)
+        findViewById(R.id.btnFoto).setOnClickListener(v -> {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivity(cameraIntent);
+        });
+
+        // Volver (Intent Explícito)
+        findViewById(R.id.btnVolverFicha).setOnClickListener(v -> finish());
     }
 }

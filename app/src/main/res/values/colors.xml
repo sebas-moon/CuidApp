@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Backgrounds: Tonos fríos y profundos para mejor legibilidad -->
+    <color name="screen_background">#0F172A</color> <!-- Slate 900 -->
+    <color name="card_background">#1E293B</color>   <!-- Slate 800 -->
+    <color name="chip_background">#334155</color>   <!-- Slate 700 -->
 
-    <!-- Backgrounds -->
-    <color name="screen_background">#F5F6F8</color>
-    <color name="card_background">#FFFFFF</color>
-    <color name="chip_background">#F2F4F7</color>
+    <!-- Text: Blanco suave y gris neutro -->
+    <color name="text_primary">#F8FAFC</color>      <!-- Slate 50 -->
+    <color name="text_secondary">#94A3B8</color>    <!-- Slate 400 -->
 
-    <!-- Text -->
-    <color name="text_primary">#1D1D1F</color>
-    <color name="text_secondary">#86868B</color>
-
-    <!-- Accent -->
-    <color name="accent_move">#FF5722</color>
-    <color name="accent_exercise">#FFC107</color>
-    <color name="accent_stand">#03A9F4</color>
-    <color name="accent_green">#4CAF50</color>
-    <color name="accent_purple">#8E24AA</color>
-
+    <!-- Accents: Tonos vibrantes para las métricas de salud -->
+    <color name="accent_move">#F43F5E</color>       <!-- Rose 500 (Calorías/Corazón) -->
+    <color name="accent_exercise">#10B981</color>   <!-- Emerald 500 (Ejercicio) -->
+    <color name="accent_stand">#0EA5E9</color>      <!-- Sky 500 (De pie) -->
+    <color name="accent_green">#10B981</color>      <!-- Emerald 500 -->
+    <color name="accent_purple">#8B5CF6</color>     <!-- Violet 500 (Acciones) -->
 </resources>
