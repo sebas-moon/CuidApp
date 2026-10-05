@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    // Paquete de la app. Reemplaza al atributo package="" del AndroidManifest.xml
     namespace = "com.santo_tomas.cuidapp"
     compileSdk {
         version = release(36) {
@@ -12,8 +13,8 @@ android {
 
     defaultConfig {
         applicationId = "com.santo_tomas.cuidapp"
-        minSdk = 31
-        targetSdk = 36
+        minSdk = 31      // Android 12 o superior
+        targetSdk = 36   // Android 16
         versionCode = 1
         versionName = "1.0"
 
@@ -36,11 +37,10 @@ android {
 }
 
 dependencies {
-    implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
+    implementation(libs.appcompat)          // AppCompatActivity
+    implementation(libs.material)           // MaterialButton, MaterialCardView, BottomNavigationView, Material3
+    implementation(libs.activity)           // Activity Result API (registerForActivityResult)
+    implementation(libs.constraintlayout)   // ConstraintLayout y Flow
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

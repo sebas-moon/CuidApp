@@ -1,59 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<!--
+    NOTA: se eliminó el atributo package="...". Con Android Gradle Plugin 7.3+ el paquete
+    se declara en app/build.gradle como:  namespace 'com.santo_tomas.cuidapp'
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ===== PERMISOS ===== -->
+    <!-- Cámara: se pide en tiempo de ejecución en FichaPacienteActivity -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Internet: necesario para abrir el Portal Minsal -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Ubicación: se pide en tiempo de ejecución en MenuPrincipalActivity.
+         Desde Android 12 hay que declarar FINE y COARSE juntos, porque el usuario puede elegir "aproximada". -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- La cámara no es obligatoria: la app también funciona en equipos sin cámara -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <!-- ===== VISIBILIDAD DE PAQUETES (Android 11+) =====
+         Declara qué tipos de apps externas puede consultar CuidApp con sus intents implícitos. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="geo" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/plain" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+            <data android:mimeType="application/pdf" />
+        </intent>
+    </queries>
 
     <application
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CuidApp">
-        <activity
-            android:name=".DashboardActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MisExpedientesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".FichaPacienteActivity"
-            android:exported="false" />
+
+        <!-- 1. Menú Principal (Launcher) -->
         <activity
             android:name=".MenuPrincipalActivity"
             android:exported="true">
             <intent-filter>
-
-                package="com.tuempresa.appsalud">
-
-                <!-- Permisos para los Intents Implícitos -->
-                <uses-permission android:name="android.permission.CAMERA" />
-                <uses-permission android:name="android.permission.INTERNET" />
-
-                <application
-                    android:allowBackup="true"
-                    android:icon="@mipmap/ic_launcher"
-                    android:label="SaludApp 🩺"
-                    android:roundIcon="@mipmap/ic_launcher_round"
-                    android:supportsRtl="true"
-                    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-                <activity android:name=".MainActivity" android:exported="true">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.intent.category.LAUNCHER" />
-                    </intent-filter>
-                </activity>
-
-                <activity android:name=".FichaActivity" />
-                <activity android:name=".ExpedientesActivity" />
-                <activity android:name=".MonitoreoActivity" />
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <!-- Demás Actividades (solo accesibles desde dentro de la app) -->
+        <activity android:name=".DashboardActivity" android:exported="false" />
+        <activity android:name=".MisExpedientesActivity" android:exported="false" />
+        <activity android:name=".FichaPacienteActivity" android:exported="false" />
+
+        <!-- Servicio en segundo plano (simula el sensor cardíaco) -->
+        <service android:name=".ServicioMonitoreo" android:exported="false" />
+
+    </application>
 </manifest>

@@ -1,30 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:background="@color/screen_background"
+    android:padding="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="📂 Expedientes Médicos"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <Button
-        android:id="@+id/btnSubirDoc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📄 Cargar Documento (Intent Implícito)"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/expedientes_titulo"
+            android:textColor="@color/text_primary"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:letterSpacing="0.02"
+            android:layout_marginBottom="32dp"/>
 
-    <Button
-        android:id="@+id/btnVolverExpedientes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#607D8B"
-        android:text="🔙 Volver al Menú"/>
-</LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/chip_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:gravity="center">
+
+                <!-- Botón principal: abre el explorador de archivos -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSubirDoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/expedientes_btn_subir"
+                    android:textColor="@color/screen_background"
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/accent_stand"
+                    app:cornerRadius="16dp" />
+
+                <!-- NUEVO: muestra el nombre del PDF elegido -->
+                <TextView
+                    android:id="@+id/tv_documento_seleccionado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@string/expedientes_ninguno"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Botón de retorno global -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVolverExpedientes"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="@string/btn_volver"
+            android:textColor="@color/accent_purple"
+            app:strokeColor="@color/accent_purple"
+            app:cornerRadius="16dp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

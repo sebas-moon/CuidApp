@@ -1,37 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- General -->
+    <!-- ===== General ===== -->
     <string name="app_name">CuidApp</string>
-    <string name="title_health">CuidApp: Dashboard</string>
+    <string name="title_health">🩺 CuidApp: Dashboard</string>
+    <string name="err_no_app">⚠️ No hay una aplicación para realizar esta acción.</string>
+    <string name="err_ui_init">⚠️ Error de inicialización de la interfaz.</string>
+    <string name="msg_vista_desarrollo">🚧 Vista en desarrollo</string>
 
-    <!-- Reportes -->
+    <!-- ===== Datos técnicos de los Intents (no se traducen) ===== -->
+    <string name="intent_tel_emergencia" translatable="false">tel:131</string>
+    <string name="intent_mailto_cuidador" translatable="false">mailto:cuidador@correo.com</string>
+    <string name="intent_url_minsal" translatable="false">https://www.minsal.cl</string>
+    <string name="intent_busqueda_hospital" translatable="false">hospital</string>
+
+    <!-- ===== Menú Principal ===== -->
+    <string name="menu_bienvenida">Bienvenido a CuidApp 🩺</string>
+    <string name="menu_ficha">📋 Ficha del Paciente</string>
+    <string name="menu_expedientes">🩺 Expedientes Médicos</string>
+    <string name="menu_monitoreo">📈 Monitoreo Diario</string>
+    <string name="menu_hospital">📍 Buscar Hospital Cercano</string>
+    <string name="menu_web">🌐 Portal Minsal</string>
+    <string name="msg_ubicacion_denegada">📍 Sin permiso de ubicación: el mapa buscará sin usar tu posición.</string>
+
+    <!-- ===== Ficha Paciente ===== -->
+    <string name="ficha_titulo">👤 Datos del Paciente</string>
+    <string name="ficha_nombre">Nombre: Juan Pérez</string>
+    <string name="ficha_rut">RUT: 12.345.678-9</string>
+    <string name="ficha_sangre">Sangre: O+ 🩸</string>
+    <string name="ficha_alergias">Alergias: Penicilina 🚫</string>
+    <string name="ficha_btn_llamar">🆘 Llamar Emergencia</string>
+    <string name="ficha_btn_correo">✉️ Enviar Correo a Cuidador</string>
+    <string name="ficha_btn_foto">📸 Tomar Foto Perfil</string>
+    <string name="btn_volver">🔙 Volver al Menú</string>
+    <string name="email_subject">🚨 Reporte de Paciente</string>
+    <string name="msg_camara_denegada">📸 Permiso de cámara denegado. Actívalo en los Ajustes del teléfono para tomar fotos.</string>
+    <string name="err_sin_camara">📷 Este dispositivo no tiene cámara.</string>
+
+    <!-- ===== Mis Expedientes ===== -->
+    <string name="expedientes_titulo">🩺 Expedientes Médicos</string>
+    <string name="expedientes_btn_subir">📄 Cargar Documento</string>
+    <string name="expedientes_ninguno">Ningún documento seleccionado</string>
+    <string name="expedientes_seleccionado">✅ Seleccionado: %1$s</string>
+    <string name="expedientes_sin_archivo">⚠️ No se pudo leer el documento seleccionado.</string>
+
+    <!-- ===== Dashboard ===== -->
     <string name="label_move">Calorías</string>
     <string name="label_exercise">Ejercicio</string>
     <string name="label_stand">Tiempo de pie</string>
-
     <string name="val_move">300</string>
     <string name="val_move_unit">kcal</string>
-
     <string name="val_exercise">30</string>
     <string name="val_exercise_unit">min</string>
-
     <string name="val_stand">5</string>
     <string name="val_stand_unit">hrs</string>
-
-    <string name="text_todays_steps">Pasos de hoy</string>
     <string name="val_steps">10,000</string>
-    <string name="val_steps_target">/ 10,000 pasos</string>
+    <string name="cd_anillos">Anillos de actividad: calorías, ejercicio y tiempo de pie</string>
+    <string name="back_to_main_menu">🔙 Volver al menú principal</string>
+    <string name="share_report">📤 Compartir reporte</string>
+    <string name="share_report_text">Mi reporte de salud...\nPasos: 10,000</string>
+    <string name="share_chooser_title">Compartir reporte de salud</string>
 
-    <!-- Compartir Reporte -->
-    <string name="back_to_main_menu">Volver al menú principal</string>
-    <string name="share_report">Compartir reporte</string>
-    <string name="share_report_title">Reporte de salud</string>
-    <string name="share_report_text">Mi reporte de salud:
-        Movimiento: 300 kcal
-        Ejercicio: 30 min
-        De pie: 12 h
-        Pasos: 10,000
-        Ejercicio registrado: 6.7 km
-        Tréboles de salud: 8/8</string>
+    <!-- Sensor cardíaco -->
+    <string name="bpm_esperando">❤️ Esperando lectura…</string>
+    <string name="bpm_lectura">❤️ %1$d BPM</string>
+    <string name="alerta_titulo">⚠️ Alerta de Salud</string>
+    <string name="alerta_taquicardia_mensaje">Se ha detectado un ritmo cardíaco inusualmente alto: %1$d BPM.</string>
+    <string name="alerta_btn_entendido">Entendido</string>
+
+    <!-- Barra de navegación inferior -->
+    <string name="nav_health">Salud</string>
+    <string name="nav_exercise">Ejercicio</string>
+    <string name="nav_discover">Descubrir</string>
+    <string name="nav_devices">Dispositivos</string>
 </resources>

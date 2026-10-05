@@ -1,55 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center"
-    android:background="#F5F5F5">
+    android:background="@color/screen_background">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bienvenido a SaludApp 🏥"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="32dp"/>
-
-    <!-- Intents Explícitos -->
-    <Button
-        android:id="@+id/btnFicha"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📋 Ficha del Paciente"
-        android:layout_marginBottom="12dp"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:padding="20dp">
 
-    <Button
-        android:id="@+id/btnExpedientes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📂 Expedientes Médicos"
-        android:layout_marginBottom="12dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnMonitoreo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📈 Monitoreo Diario"
-        android:layout_marginBottom="32dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_bienvenida"
+                android:textColor="@color/text_primary"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.02"
+                android:layout_marginBottom="32dp"
+                android:layout_marginTop="16dp"/>
 
-    <!-- Intents Implícitos de Alessy -->
-    <Button
-        android:id="@+id/btnHospital"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#4CAF50"
-        android:text="📍 Buscar Hospital Cercano"
-        android:layout_marginBottom="12dp"/>
+            <!-- Tarjeta de Navegación (Intents Explícitos) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/chip_background">
 
-    <Button
-        android:id="@+id/btnWeb"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#2196F3"
-        android:text="🌐 Portal Minsal" />
-</LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnFicha"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="@string/menu_ficha"
+                        android:textColor="@color/text_primary"
+                        app:backgroundTint="@color/accent_purple"
+                        app:cornerRadius="16dp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnExpedientes"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="@string/menu_expedientes"
+                        android:textColor="@color/text_primary"
+                        app:backgroundTint="@color/accent_purple"
+                        app:cornerRadius="16dp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnMonitoreo"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="@string/menu_monitoreo"
+                        android:textColor="@color/text_primary"
+                        app:backgroundTint="@color/accent_purple"
+                        app:cornerRadius="16dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Tarjeta de Servicios Externos (Intents Implícitos) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/chip_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnHospital"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="@string/menu_hospital"
+                        android:textColor="@color/text_primary"
+                        app:backgroundTint="@color/btn_green"
+                        app:cornerRadius="16dp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnWeb"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="@string/menu_web"
+                        android:textColor="@color/text_primary"
+                        app:backgroundTint="@color/btn_blue"
+                        app:cornerRadius="16dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

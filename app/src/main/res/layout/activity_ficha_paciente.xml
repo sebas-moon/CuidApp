@@ -1,49 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:background="@color/screen_background">
 
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="👤 Datos del Paciente"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:padding="20dp">
 
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Nombre: Juan Pérez" android:textSize="18sp"/>
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="RUT: 12.345.678-9" android:textSize="18sp"/>
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sangre: O+ 🩸" android:textSize="18sp"/>
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Alergias: Penicilina 🚫" android:textSize="18sp" android:layout_marginBottom="24dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <!-- Intents Implícitos Sofi -->
-    <Button
-        android:id="@+id/btnLlamar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#F44336"
-        android:text="🆘 Llamar Emergencia"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ficha_titulo"
+                android:textColor="@color/text_primary"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.02"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp"/>
 
-    <Button
-        android:id="@+id/btnCorreo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="✉️ Enviar Correo a Cuidador"/>
+            <!-- Tarjeta de Datos Duros -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/chip_background">
 
-    <Button
-        android:id="@+id/btnFoto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#9C27B0"
-        android:text="📸 Tomar Foto Perfil"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-    <Button
-        android:id="@+id/btnVolverFicha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#607D8B"
-        android:text="🔙 Volver al Menú"/>
-</LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ficha_nombre"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ficha_rut"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ficha_sangre"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ficha_alergias"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Botones de Acción (Intents Implícitos) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLlamar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/ficha_btn_llamar"
+                android:textColor="@color/text_primary"
+                app:backgroundTint="@color/btn_red"
+                app:cornerRadius="16dp"
+                android:layout_marginBottom="12dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/ficha_btn_correo"
+                android:textColor="@color/screen_background"
+                app:backgroundTint="@color/accent_exercise"
+                app:cornerRadius="16dp"
+                android:layout_marginBottom="12dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFoto"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/ficha_btn_foto"
+                android:textColor="@color/text_primary"
+                app:backgroundTint="@color/btn_purple"
+                app:cornerRadius="16dp"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- Botón de Retorno -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVolverFicha"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/btn_volver"
+                android:textColor="@color/accent_purple"
+                app:strokeColor="@color/accent_purple"
+                app:cornerRadius="16dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
