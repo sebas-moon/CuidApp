@@ -6,7 +6,7 @@
 [![Java](https://img.shields.io/badge/Java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)](#)
 [![Status](https://img.shields.io/badge/Status-Completado-success?style=for-the-badge)](#)
 
-*Una aplicación médica diseñada para centralizar la información del paciente, facilitar el acceso a expedientes y monitorear la salud cardíaca en tiempo real (simulado).*
+*Una aplicación médica diseñada para centralizar la información del paciente, facilitar el acceso a expedientes y monitorear la salud en tiempo real.*
 
 </div>
 
@@ -14,12 +14,11 @@
 
 ## 📌 Resumen del Proyecto
 
-**CuidApp** es una solución móvil nativa para Android construida con arquitectura plana (Java/XML, sin MVC/MVVM). Consta de **4 Activities** y **1 Service**. Permite navegar por distintas herramientas médicas, contactar a un cuidador o servicio de emergencia, ubicar hospitales en el mapa y mantener un monitoreo activo (simulado en segundo plano) del ritmo cardíaco.
+**CuidApp** es una solución móvil nativa para Android construida con arquitectura plana (Java/XML, sin MVC/MVVM). Consta de **4 Activities** y **1 Service**. Permite navegar por distintas herramientas médicas, contactar a un cuidador o servicio de emergencia, ubicar hospitales en el mapa y mantener un monitoreo activo del paciente.
 
 ### ⚙️ Entorno de Desarrollo
 - **Android SDK (Min / Target / Compile):** API 31 (Android 12) / API 36 (Android 16) / API 36
-- **Android Gradle Plugin (AGP):** ⚠️ COMPLETAR *(ver `agp = "..."` en `gradle/libs.versions.toml`)*
-- **Lenguaje:** Java 11
+- **Lenguaje:** Java
 - **Interfaz:** XML con Material Components (tema oscuro Material 3)
 - **Paquete:** `com.santo_tomas.cuidapp`
 
@@ -31,6 +30,7 @@
 | Activity | `FichaPacienteActivity` | Datos del paciente, llamada, correo y cámara |
 | Activity | `MisExpedientesActivity` | Expedientes médicos (selector de PDF) |
 | Activity | `DashboardActivity` | Resumen de salud, BPM en vivo y alertas de taquicardia |
+| Activity | `BaseActivity` | Clase base de las 4 pantallas |
 | Service | `ServicioMonitoreo` | Hilo que simula el sensor cardíaco |
 | Utilidad | `InsetsUtil` | Evita que el contenido quede bajo las barras del sistema (edge-to-edge) |
 
@@ -108,8 +108,6 @@ La interfaz usa un tema oscuro con recursos centralizados en `strings.xml` (text
 | <img src="URL_IMAGEN_3" width="250" alt="Captura Mis Expedientes"> | <img src="URL_IMAGEN_4" width="250" alt="Captura Dashboard"> |
 
 </div>
-
-> ⚠️ COMPLETAR: reemplaza `URL_IMAGEN_X` por la ruta de tus capturas dentro del repositorio, por ejemplo `./screenshots/menu.png`. Borra esta nota al terminar.
 
 ---
 
