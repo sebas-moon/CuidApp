@@ -75,6 +75,17 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- NUEVO: foto de perfil. Oculta hasta que la cámara devuelve una imagen -->
+            <ImageView
+                android:id="@+id/iv_foto_perfil"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:contentDescription="@string/cd_foto_perfil"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
             <!-- Botones de Acción (Intents Implícitos) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLlamar"

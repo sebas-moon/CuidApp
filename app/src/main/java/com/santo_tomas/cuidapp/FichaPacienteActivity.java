@@ -130,6 +130,7 @@ public class FichaPacienteActivity extends BaseActivity {
      * MEJORA: Se evita el uso exclusivo del método deprecated, bifurcando
      * según la versión del sistema operativo (API 33+).
      */
+    @SuppressWarnings("deprecation")
     private Bitmap extraerMiniatura(Intent datos) {
         if (datos == null || datos.getExtras() == null) return null;
 

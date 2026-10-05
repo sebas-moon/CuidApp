@@ -1,12 +1,17 @@
-<resources>
-    <!-- Tema base de CuidApp: Material 3 oscuro, sin ActionBar (cada pantalla trae su propio título).
-         Los colores salen de colors.xml, así que no hay referencias a recursos inexistentes. -->
-    <style name="Theme.CuidApp" parent="Theme.Material3.Dark.NoActionBar">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Tema base de la aplicación (Sin Action Bar para usar nuestro propio diseño) -->
+    <style name="Theme.CuidApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Colores principales (referenciando tu colors.xml) -->
         <item name="colorPrimary">@color/accent_purple</item>
+        <item name="colorPrimaryVariant">@color/btn_purple</item>
         <item name="colorOnPrimary">@color/text_primary</item>
-        <item name="colorSecondary">@color/accent_stand</item>
-        <item name="colorOnSecondary">@color/screen_background</item>
-        <!-- windowBackground pinta el área de las barras del sistema (edge-to-edge en Android 15/16) -->
+
+        <!-- Colores secundarios -->
+        <item name="colorSecondary">@color/accent_green</item>
+        <item name="colorSecondaryVariant">@color/btn_green</item>
+        <item name="colorOnSecondary">@color/text_primary</item>
+
+        <!-- Fondos generales -->
         <item name="android:windowBackground">@color/screen_background</item>
         <item name="android:statusBarColor">@color/screen_background</item>
     </style>
