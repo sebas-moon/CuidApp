@@ -71,13 +71,13 @@
         <!-- Botón de retorno global -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolverExpedientes"
-            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="@string/btn_volver"
-            android:textColor="@color/accent_purple"
-            app:strokeColor="@color/accent_purple"
-            app:cornerRadius="16dp" />
+            android:textColor="@color/black"
+            app:backgroundTint="#FFEB3B"
+            app:cornerRadius="16dp" 
+            android:textSize="16sp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
