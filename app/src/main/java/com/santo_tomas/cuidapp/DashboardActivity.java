@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import android.widget.Toast;
 
 /**
  * Dashboard de salud.
@@ -63,7 +64,9 @@ public class DashboardActivity extends BaseActivity {
     }
 
     private void configurarListeners() {
-        configurarBoton(R.id.btn_back_to_menu, v -> volverAlMenu()); // Intent #2 (BaseActivity)
+        configurarBoton(R.id.btn_back_to_menu, v -> volverAlMenu());
+        // EXTRA (IMPLÍCITO): ACTION_SEND -> abre el menú nativo para compartir el reporte de salud
+        configurarBoton(R.id.btn_share_report, v -> compartirReporte());
 
         if (bottomNavigation != null) {
             bottomNavigation.setOnItemSelectedListener(item -> {
@@ -74,6 +77,25 @@ public class DashboardActivity extends BaseActivity {
                 mostrarMensaje(R.string.msg_vista_desarrollo);
                 return false;
             });
+        }
+    }
+
+    // =====================================================================
+    // EXTRA (IMPLÍCITO): Compartir reporte de salud.
+    // ACTION_SEND con type="text/plain" abre el selector nativo de apps.
+    // createChooser() obliga a mostrar el menú aunque haya una app predeterminada.
+    // Si no hay apps disponibles, catch(ActivityNotFoundException) muestra un Toast.
+    // =====================================================================
+    private void compartirReporte() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Reporte de Salud - CuidApp");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Reporte de salud del paciente: Ritmo cardíaco estable.");
+
+        try {
+            startActivity(Intent.createChooser(shareIntent, "Compartir reporte con..."));
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(this, "No hay apps para compartir", Toast.LENGTH_SHORT).show();
         }
     }
 

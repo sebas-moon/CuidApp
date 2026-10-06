@@ -28,4 +28,5 @@
     <color name="btn_purple">#9C27B0</color>
     <color name="btn_green">#4CAF50</color>
     <color name="btn_blue">#2196F3</color>
+    <color name="accent_yellow">#EAB308</color>
 </resources>
