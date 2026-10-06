@@ -11,8 +11,14 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 
+import android.content.SharedPreferences;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 /**
@@ -30,7 +36,10 @@ import androidx.core.content.ContextCompat;
  */
 public class FichaPacienteActivity extends BaseActivity {
 
+    private static final String PREFS = "ficha_paciente";
+
     private ImageView ivFoto;
+    private TextView tvNombre, tvRut, tvSangre, tvAlergias;
 
     /** Respuesta del diálogo de permiso de cámara: si lo aceptó, abre la cámara de inmediato. */
     private final ActivityResultLauncher<String> solicitarPermisoCamara =
@@ -67,12 +76,72 @@ public class FichaPacienteActivity extends BaseActivity {
         setContentView(R.layout.activity_ficha_paciente);
         InsetsUtil.aplicar(this); // evita que el contenido quede bajo las barras del sistema
 
-        ivFoto = findViewById(R.id.iv_foto_perfil);
+        ivFoto    = findViewById(R.id.iv_foto_perfil);
+        tvNombre  = findViewById(R.id.tv_nombre);
+        tvRut     = findViewById(R.id.tv_rut);
+        tvSangre  = findViewById(R.id.tv_sangre);
+        tvAlergias= findViewById(R.id.tv_alergias);
 
-        configurarBoton(R.id.btnLlamar, v -> llamarEmergencia());
-        configurarBoton(R.id.btnCorreo, v -> enviarCorreo());
-        configurarBoton(R.id.btnFoto, v -> tomarFoto());
+        cargarDatos(); // restaura los datos guardados (si los hay)
+
+        configurarBoton(R.id.btnLlamar,      v -> llamarEmergencia());
+        configurarBoton(R.id.btnCorreo,      v -> enviarCorreo());
+        configurarBoton(R.id.btnFoto,        v -> tomarFoto());
+        configurarBoton(R.id.btnEditarDatos, v -> mostrarDialogoEditar());
         configurarBoton(R.id.btnVolverFicha, v -> volverAlMenu()); // Intent #2 (BaseActivity)
+    }
+
+    /** Restaura los datos guardados con SharedPreferences; si no hay, usa los valores por defecto. */
+    private void cargarDatos() {
+        SharedPreferences p = getSharedPreferences(PREFS, MODE_PRIVATE);
+        tvNombre.setText(p.getString("nombre", getString(R.string.ficha_nombre)));
+        tvRut.setText(p.getString("rut",       getString(R.string.ficha_rut)));
+        tvSangre.setText(p.getString("sangre",  getString(R.string.ficha_sangre)));
+        tvAlergias.setText(p.getString("alergias", getString(R.string.ficha_alergias)));
+    }
+
+    /** Muestra un diálogo con 4 campos editables prellenados con los datos actuales. */
+    private void mostrarDialogoEditar() {
+        // Contenedor del diálogo
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(64, 24, 64, 0);
+
+        // Campos prellenados con los datos actuales
+        EditText etNombre   = crearCampo("Nombre",   tvNombre.getText().toString(),   layout);
+        EditText etRut      = crearCampo("RUT",       tvRut.getText().toString(),      layout);
+        EditText etSangre   = crearCampo("Sangre",    tvSangre.getText().toString(),   layout);
+        EditText etAlergias = crearCampo("Alergias",  tvAlergias.getText().toString(), layout);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Editar datos del paciente")
+                .setView(layout)
+                .setPositiveButton("Guardar", (d, w) -> {
+                    // Actualiza los TextViews en pantalla
+                    tvNombre.setText(etNombre.getText().toString());
+                    tvRut.setText(etRut.getText().toString());
+                    tvSangre.setText(etSangre.getText().toString());
+                    tvAlergias.setText(etAlergias.getText().toString());
+                    // Persiste los cambios para que sobrevivan al cerrar la app
+                    getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                            .putString("nombre",   etNombre.getText().toString())
+                            .putString("rut",      etRut.getText().toString())
+                            .putString("sangre",   etSangre.getText().toString())
+                            .putString("alergias", etAlergias.getText().toString())
+                            .apply();
+                    mostrarMensaje(R.string.ficha_datos_guardados);
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    /** Crea un EditText con hint y valor inicial, y lo añade al layout del diálogo. */
+    private EditText crearCampo(String hint, String valor, LinearLayout layout) {
+        EditText et = new EditText(this);
+        et.setHint(hint);
+        et.setText(valor);
+        layout.addView(et);
+        return et;
     }
 
     // =====================================================================

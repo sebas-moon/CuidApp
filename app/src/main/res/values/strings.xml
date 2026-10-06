@@ -34,6 +34,7 @@
     <string name="btn_volver">🔙 Volver al Menú</string>
     <string name="email_subject">🚨 Reporte de Paciente</string>
     <string name="msg_camara_denegada">📸 Permiso de cámara denegado. Actívalo en los Ajustes del teléfono para tomar fotos.</string>
+    <string name="ficha_datos_guardados">✅ Datos guardados correctamente.</string>
     <string name="err_sin_camara">📷 Este dispositivo no tiene cámara.</string>
 
     <!-- ===== Mis Expedientes ===== -->
